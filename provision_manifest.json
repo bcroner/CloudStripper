@@ -1,0 +1,36 @@
+{
+  "manifest_version": "1.0.0",
+  "customer_id": "cust_9834710",
+  "deployment_id": "dep_20261106_001",
+  "infrastructure_profile": {
+    "target_preset": "high_throughput_solver",
+    "kernel_optimizations": {
+      "max_map_count": 262144,
+      "file_descriptors": 65535,
+      "tcp_tw_reuse": 1
+    }
+  },
+  "runtime_stack": {
+    "orchestrator": "docker-compose",
+    "network_mode": "bridge",
+    "containers": [
+      {
+        "name": "web-gateway",
+        "image": "nginx:alpine",
+        "ports": ["80:80", "443:443"],
+        "environment": {},
+        "restart_policy": "unless-stopped"
+      },
+      {
+        "name": "slam-core-engine",
+        "image": "ghcr.io/bcroner/slam:latest",
+        "ports": ["8080:8080"],
+        "environment": {
+          "MAX_WINDOW_SIZE": "255",
+          "CORE_THREAD_COUNT": "auto"
+        },
+        "restart_policy": "always"
+      }
+    ]
+  }
+}
